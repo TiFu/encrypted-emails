@@ -18,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/TiFu/decentralized-encrypted-emails/issues"
   },
-  "homepage": "https://github.com/TiFu/decentralized-encrypted-emails#readme"
+  "homepage": "https://github.com/TiFu/decentralized-encrypted-emails#readme",
+  "devDependencies": {
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
+  },
+  "dependencies": {
+    "emailjs-smtp-client": "^2.0.1"
+  }
 }
