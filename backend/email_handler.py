@@ -19,7 +19,7 @@ class MailBox():
 
     def get_n_emails(self, mailbox):
         _ , byteno = self.connection.select(mailbox, readonly=True)
-        return int(byteno[0].decode())
+        return min(self.MAX_MAIL, int(byteno[0].decode()))
 
     def is_read(self, email_id):
         unseen_list = self.connection.search(None, 'UNSEEN')[1][0].decode().split()
@@ -30,10 +30,28 @@ class MailBox():
 
     def refresh_mailbox(self, mailbox):
         emails = []
+        self.connection.select(mailbox, readonly=True)
+        #print(self.get_n_emails(mailbox))
+        for i in range(1, self.get_n_emails(mailbox)):
+            _, msg_data=self.connection.fetch(str(i), "RFC822")
+            mail = mailparser.parse_from_bytes(msg_data[0][1])
+            emails.append({"id": str(i),
+             "date": str(mail.date),
+             "delivered_to" : mail.delivered_to, 
+             "from": mail.from_,
+             "subject" : mail.subject, 
+             "to": mail.to, 
+             "timezone": mail.timezone})
+        return emails
 
 
     def refresh_all(self):
-        for 
+        mail_preview_list = {}
+        #print(self.mailboxes)
+
+        for m in self.mailboxes:
+            mail_preview_list[m] = self.refresh_mailbox(m)
+        return mail_preview_list
 
     def get_payload(self, mail: mailparser.MailParser):
         if(len(mail.text_html) == 0):
