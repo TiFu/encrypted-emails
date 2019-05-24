@@ -1,0 +1,164 @@
+.black {
+    background-color: white;
+}
+.green {
+    background-color: white;
+}
+
+.red {
+    background-color: red;
+}
+
+.header {
+    height: 75px;
+    border-color: #ECEFF1;
+    display: flex;
+    align-items: center;
+}
+
+.mail-list {
+    height: 100%;
+}
+
+.mail-view {
+    height: 100%;
+}
+
+.folder-col {
+    height: calc(100vh - 75px);
+}
+
+.mail-col {
+    height: calc(100vh - 75px);
+}
+
+.folder-list .nav-link {
+    border-radius: 0px 20px 20px 0px;
+}
+
+.envelope {
+    position: relative;
+    left:-20px;
+}
+
+
+.logo-size {
+    font-size: 40pt;
+}
+
+.logged-in-user {
+    position: absolute;
+    right: 10px;
+}
+
+.logo {
+    font-size: 40pt;
+    font-weight: bold;
+    float:left;
+    align-items: center;
+    display: flex;
+}
+
+.center-vertical {
+    align-items: center;
+    display: flex;
+}
+
+.font-grey {
+    color: #ECEFF1;
+}
+
+
+.default-font {
+    color: black;
+}
+
+.mail-content-preview {
+    color: #5F6368;
+}
+
+.mail-list-first-col {
+    width:30px;
+}
+
+.mail-list-sender-col {
+    width: 20%;
+}
+
+.mail-list-content-col {
+    width: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
+
+.mail-list-date-col {
+    width: 75px;
+}
+
+.clock {
+    width:100px;
+}
+
+.mail-list-table {
+    width:100%;
+    overflow:hidden;
+    table-layout: fixed;
+}
+
+.wrap-text {
+    display:block;
+    width:inherit;
+}
+
+.mail-list-background {
+    background-color: #F4F7F7;
+}
+
+
+
+.mail-subject {
+    min-height: 50px;
+}
+
+.mail-content {
+    margin-top: 1rem;
+    min-height: calc(100% - 180px);
+}
+
+.mail-header {
+    min-height: 50px;
+}
+
+.mail-footer {
+    margin-top: 1rem;
+    text-align: right;
+    height: 20px;
+}
+
+.new-e-mail-counter {
+    float:right;
+    margin-top: 2px;
+}
+
+.user-image {
+    font-size: 40pt;
+}
+
+.mail-view-first-col {
+    width: 40px;
+}
+
+.mail-view-second-col {
+    width: calc(100% - 40px);
+}
+
+.float-left {
+    float:left;
+}
+
+.mail-list-header {
+    height: 40px;
+    
+}
