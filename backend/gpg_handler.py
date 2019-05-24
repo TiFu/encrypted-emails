@@ -25,10 +25,11 @@ def encryptString(string, recipientkey):
     gpg = gnupg.GPG(gnupghome=gpgdir)
     #importing the string from a key
     imported = gpg.import_keys(recipientkey)
+    #set its trust level
     gpg.trust_keys(imported.fingerprints, "TRUST_ULTIMATE")
-    print(imported.fingerprints)
-    enc_string = gpg.encrypt(string, imported.fingerprints[0])
-    print(enc_string)
+    #print(imported.fingerprints)
+    enc_string = gpg.encrypt(string, imported.fingerprints)
+    #print(enc_string)
     return enc_string
 
 def decryptString(message, passphrase):
