@@ -55,12 +55,15 @@ class MailBox():
         return mail_preview_list
 
     def get_payload(self, mail: mailparser.MailParser):
-        if(len(mail.text_html) == 0):
+        if(len(mail.text_html) != 0):
             return mail.text_html[0]
         return mail.text_plain[0]
 
     def get_mail(self, id, mailbox):
         self.connection.select(mailbox)
+        _, msg_data=self.connection.fetch(id, "RFC822")
+        mail = mailparser.parse_from_bytes(msg_data[0][1])
+        return self.get_payload(mail)
 
     def __del__(self):
         self.connection.logout()

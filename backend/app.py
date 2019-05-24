@@ -34,8 +34,8 @@ def getMail():
         return "Please log in before requesting emails."
     
     data = request.get_json()
-    mail_box.get_mail(data["id"], data["mailbox"])
-    return "success"
+    payload = mail_box.get_mail(data["id"], data["mailbox"])
+    return payload
 
 if __name__ == '__main__':
     app.run(debug=True)
