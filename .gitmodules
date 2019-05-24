@@ -1,3 +1,0 @@
-[submodule "src/smtp"]
-	path = src/smtp
-	url = git@github.com:emailjs/emailjs-smtp-client.git
