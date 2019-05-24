@@ -4,16 +4,8 @@ export class MailList extends React.Component<{}, {}> {
 
     render() { 
         return <div className="container-fluid">
-                    <div className="row mail-list-header">
-                        <div className="col-12">
-                            <div className="custom-control custom-checkbox float-left">
-                                <input type="checkbox" className="custom-control-input" id="defaultUnchecked" />
-                                <label className="custom-control-label"></label>
-                            </div>
-                            <div>
-                                <i className="fas fa-trash"></i>
-                            </div>
-                        </div>
+                    <div className="row pt-2">
+                    <h2>Inbox</h2>
                     </div>
                     <div className="row">
                         <table className="table mail-list-table mail-list-background pr-4">

@@ -5,6 +5,9 @@
     background-color: white;
 }
 
+h2 {
+    font-weight: bold;
+}
 .red {
     background-color: red;
 }
@@ -161,4 +164,13 @@
 .mail-list-header {
     height: 40px;
     
+}
+
+
+.round-button {
+    border-radius: 40px;
+}
+
+.header-bg-color {
+    color: #004225;
 }
