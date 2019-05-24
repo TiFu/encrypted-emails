@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from email_handler import MailBox
+from IMAP_handler import MailBox
 import json
 
 mail_box=None

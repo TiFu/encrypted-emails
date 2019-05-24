@@ -67,3 +67,4 @@ class MailBox():
 
     def __del__(self):
         self.connection.logout()
+
