@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from IMAP_handler import MailBox
+from SFTP_handler import MailSender
 import json
 
 mail_box=None
@@ -36,6 +37,15 @@ def getMail():
     data = request.get_json()
     payload = mail_box.get_mail(data["id"], data["mailbox"])
     return payload
+
+@app.route('/cryptomail/api/v1.0/SendMail', methods = ["POST"])
+def sendMail():
+    data = request.get_json()
+    s = MailSender()
+    status = s.send_email(data["content"], data["subject"],
+     data["recipients"], data["sender"], data["hostname"], data["user"],
+     data["password"], data["port"])
+    return status
 
 if __name__ == '__main__':
     app.run(debug=True)
