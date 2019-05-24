@@ -1,0 +1,22 @@
+{
+  "name": "decentralized-encrypted-emails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "postbuild": "cp package.json ./build/ && cd build && npm install --production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiFu/decentralized-encrypted-emails.git"
+  },
+  "author": "Felix Altenbarg, Tino Fuhrmann",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/TiFu/decentralized-encrypted-emails/issues"
+  },
+  "homepage": "https://github.com/TiFu/decentralized-encrypted-emails#readme"
+}
