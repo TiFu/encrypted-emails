@@ -5,7 +5,7 @@ import mailparser
 class MailBox():
 
     def __init__(self, hostname, user, password, port=993):
-        self.MAX_MAIL=100
+        self.MAX_MAIL=20
 
         self.connection = imaplib.IMAP4_SSL(hostname, port=port)
         self.connection.login(user, password)
@@ -14,7 +14,7 @@ class MailBox():
         self.mailboxes=[]
         for i in self.connection.list()[1]:
             l = i.decode().split(' "/" ')
-            if not "Calendar" in l[1]:
+            if not "Calendar" in l[1] and not "Noselect" in l[0]:
                 self.mailboxes.append(l[1])
 
     def get_n_emails(self, mailbox):
