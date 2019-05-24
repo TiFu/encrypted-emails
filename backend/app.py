@@ -25,7 +25,17 @@ def refreshAll():
     if not mail_box:
         return "Please log in before requesting emails."
     
-    return json.dumps(mail_box.refresh_all())
+    return json.dumps(mail_box.refresh_all())#
+
+@app.route('/cryptomail/api/v1.0/GetMail', methods = ["POST"])
+def getMail():
+    global mail_box
+    if not mail_box:
+        return "Please log in before requesting emails."
+    
+    data = request.get_json()
+    mail_box.get_mail(data["id"], data["mailbox"])
+    return "success"
 
 if __name__ == '__main__':
     app.run(debug=True)

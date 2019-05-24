@@ -41,7 +41,8 @@ class MailBox():
              "from": mail.from_,
              "subject" : mail.subject, 
              "to": mail.to, 
-             "timezone": mail.timezone})
+             "timezone": mail.timezone,
+             "read": self.is_read(str(i))})
         return emails
 
 
@@ -57,6 +58,9 @@ class MailBox():
         if(len(mail.text_html) == 0):
             return mail.text_html[0]
         return mail.text_plain[0]
+
+    def get_mail(self, id, mailbox):
+        self.connection.select(mailbox)
 
     def __del__(self):
         self.connection.logout()
