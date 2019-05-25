@@ -48,7 +48,8 @@ class MailBox():
                            "subject": mail.subject,
                            "to": mail.to,
                            "timezone": mail.timezone,
-                           "read": self.is_read(str(i))})
+                           "read": self.is_read(str(i)),
+                           "encrypted:": True if "BEGIN PGP MESSAGE" in mail.text_plain[0] else False)}
         return emails
 
     def refresh_all(self):
