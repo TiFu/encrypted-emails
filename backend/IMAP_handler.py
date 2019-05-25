@@ -67,8 +67,8 @@ class MailBox():
     def get_payload(self, mail: mailparser.MailParser):
         if(len(mail.text_html) != 0):
             return mail.text_html[0]
-        print("RECEIVED MESSAGE TEXT " + str(mail.text_plain[0]))
-        print("Password: " + str(self.password))
+        #print("RECEIVED MESSAGE TEXT " + str(mail.text_plain[0]))
+        #print("Password: " + str(self.password))
         if "BEGIN PGP MESSAGE" in mail.text_plain[0]:
             return str(decryptString(mail.text_plain[0], self.password))
         return mail.text_plain[0]
