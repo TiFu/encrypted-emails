@@ -36,12 +36,3 @@ def encryptString(string, recipientkey):
 def decryptString(message, passphrase):
     gpg = gnupg.GPG(gnupghome=gpgdir)
     return gpg.decrypt(message, passphrase=passphrase)
-
-
-# if __name__ == "__main__":
-#     pubkey, privkey = createKeys("cunt@cunt.com", "cunt")
-#     print(pubkey)
-#     print(privkey)
-#     encmessage = encryptString("hello you cunt", "cunt2@cunt.com", pubkey2)
-#     print(str(encmessage))
-#     print(decryptString(str(encmessage), "cunt2"))
