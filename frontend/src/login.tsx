@@ -124,7 +124,7 @@ class LoginComponent extends React.Component<LoginComponentProps & LoginComponen
 
 import { Store } from './store'
 import { connect } from 'react-redux';
-function mapStateToProps(state: Store): {} {
+function mapStateToProps(state: Store): LoginComponentProps {
     console.log("State: ", state);
     return {
         isLoggingIn: state.componentState.loggingIn,

@@ -9,7 +9,10 @@ export type Store = {
         smtpHost: string | null,
         smtpPort: string | null,
         loggingIn: boolean,
-        failedLogin: boolean
+        failedLogin: boolean,
+        showSendEMailModal: boolean,
+        failedSending: boolean
+        isSending: boolean
     },
     errorMessage: {
         error: string | null,
@@ -45,7 +48,10 @@ let initialState = {
         imapHost: null,
         imapPort: null,
         smtpHost: null,
-        smtpPort: null
+        smtpPort: null,
+        showSendEMailModal: false,
+        failedSending: false,
+        isSending: false
     },
     errorMessage: {
         error: null,
@@ -155,7 +161,16 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
             return { ...state, componentState: { ...state.componentState, selectedEMail: action.payload}}
         case "LOGGING_IN": 
             return { ...state, componentState: { ...state.componentState, loggingIn: true}}
+        case "SHOW_SENDING_MODAL": 
+            return { ...state, componentState: { ...state.componentState, showSendEMailModal: true, initialRecipients: action.payload.recipients, initialSubject: action.payload.subject, initialContent: action.payload.content}}
+        case "CLOSE_SENDING_MODAL":
+            return { ...state, componentState: { ...state.componentState, showSendEMailModal: false}}
+        case "SENT_EMAIL": 
+            return { ...state, componentState: { ...state.componentState, isSending: false, showSendEMailModal: !action.payload.success, failedSending: !action.payload.success}}
+        case "SENDING_EMAIL":
+            return { ...state, componentState: { ...state.componentState, isSending: true, showSendEMailModal: true, failedSending: false }}
         case "LOGGED_IN": 
+
             return { 
                 ...state, 
                 componentState: { 

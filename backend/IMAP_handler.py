@@ -36,7 +36,7 @@ class MailBox():
         emails = []
         self.connection.select(mailbox, readonly=True)
         # print(self.get_n_emails(mailbox))
-        for i in range(1, self.get_n_emails(mailbox)):
+        for i in range(1, self.get_n_emails(mailbox) + 1):
             _, msg_data = self.connection.fetch(str(i), "RFC822")
             mail = mailparser.parse_from_bytes(msg_data[0][1])
             emails.append({"id": str(i),

@@ -1,4 +1,53 @@
+import { userInfo } from "os";
+
 declare var $: any;
+
+export function showSendEMailModal(recipients: string[], subject: string, content: string, dispatch: any) {
+    dispatch({
+        type: "SHOW_SENDING_MODAL",
+        payload: {
+            recipients: recipients,
+            subject: subject,
+            content: content
+        }
+    })
+}
+export function sendEMail(sender: string, password: string, recipients: string[], content: string, subject: string, smtpHostname: string, smtpPort: string, dispatch: any): void {
+    dispatch({
+        type: "SENDING_EMAIL",
+        payload: null
+    })    
+
+    $.ajax("/cryptomail/api/v1.0/SendMail", {
+        method: "POST",
+        contentType: "application/json",
+        dataType: "text",
+        data: JSON.stringify({
+            "content": content,
+            "subject": subject,
+            "recipients": recipients,
+            "sender": sender,
+            "user": sender,
+            "password": password,
+            "hostname": smtpHostname,
+            "port": smtpPort
+        })
+    }).then((result: any) => {
+        dispatch({
+            type: "SENT_EMAIL",
+            payload: {
+                success: true
+            }
+        })
+    }).catch((err: any) => {
+        dispatch({
+            type: "SENT_EMAIL",
+            payload: {
+                success: false
+            }
+        })
+    })
+}
 
 export function loginToEMail(hostname: string, port: string, user:string, password: string, smtpHost: string, smtpPort: string, dispatch: any) {
     dispatch({

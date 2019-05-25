@@ -4,7 +4,7 @@ type MailViewProps = {
     id: string | null,
     date: string | null,
     delivered_to: string | null,
-    from: string | null,
+    from: string[][] | null,
     subject: string | null,
     to: string | null,
     timezone: string | null,
@@ -17,6 +17,7 @@ type MailViewProps = {
 
 type MailViewActions = {
     fetchEmailContent: (id: string, mailbox: string) => void
+    showSendEMailModal: (recipients: string[], subject: string, content: string) => void
 }
 
 class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
@@ -47,29 +48,29 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
                         <h2>{this.props.subject}</h2>
                     </div>
                 </div>
-                <div className="row mail-header">
-                    <div className="col-1 text-center p-0 ml-1">
-                        <i className="fas fa-user-circle user-image"></i>
-                    </div>
-                    <div className="col">
-                        <b>{this.props.from}</b> <span className="mail-content-preview">&lt;{this.props.from}&gt;</span><br />
-                        to <span className="mail-content-preview">{this.props.to}</span>
-                    </div>
-                    <div className="col text-right clock">
-                        <i className="fas fa-clock"></i> {this.props.date}
-                    </div>
-                </div>
                 <div className="row mail-footer">
                     <div className="col-1  p-0">
                     </div>
                     <div className="col-11">
                         <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"></div>
                             <div className="btn-group mr-2" role="group" aria-label="Second group">
-                                <button type="button" className="btn btn-secondary"><i className="fas fa-arrow-circle-right"></i> Forward</button>
+                                <button type="button" onClick={() => this.props.showSendEMailModal([], this.props.subject, this.props.content)} className="btn btn-secondary"><i className="fas fa-arrow-circle-right"></i> Forward</button>
                             </div>
                             <div className="btn-group mr-2" role="group" aria-label="First group">
-                                <button type="button" className="btn btn-primary"><i className="fas fa-reply"></i> Reply</button>
+                                <button type="button" onClick={() => this.props.showSendEMailModal(this.props.from[0], this.props.subject, this.props.content)} className="btn btn-primary"><i className="fas fa-reply"></i> Reply</button>
                             </div>
+                    </div>
+                </div>
+                <div className="row mail-header pt-5">
+                    <div className="col-1 text-center p-0 ml-1">
+                        <i className="fas fa-user-circle user-image"></i>
+                    </div>
+                    <div className="col">
+                        <b>{this.props.from[0].reduce((prev, next) => prev == "" ? next : prev + ", " + next, "")}</b><br />
+                        to <span className="mail-content-preview">{this.props.to}</span>
+                    </div>
+                    <div className="col text-right clock">
+                        <i className="fas fa-clock"></i> {this.props.date}
                     </div>
                 </div>
                 <div className="row mail-content p-2">
@@ -115,11 +116,12 @@ function mapStateToProps(state: Store): MailViewProps {
     }; 
 }
   
-import { getEMailContent } from './actions'
+import { getEMailContent, showSendEMailModal } from './actions'
 
 function mapDispatchToProps(dispatch: any): MailViewActions {
       return {
-        fetchEmailContent: (id: string, mailbox: string) => getEMailContent(id, mailbox, dispatch)
+        fetchEmailContent: (id: string, mailbox: string) => getEMailContent(id, mailbox, dispatch),
+        showSendEMailModal: (recipients: string[], subject: string, content: string) => showSendEMailModal(recipients, subject, content, dispatch)
 
       }
 }

@@ -5,7 +5,11 @@ import Header from './header'
 import MailComponent from './mails'
 import LoginComponent from './login'
 
-class MainComponent extends React.Component<{}, {}> {
+type MainComponentActions = {
+    showSendModal: () => void
+}
+
+class MainComponent extends React.Component<MainComponentActions, {}> {
 
     render() { 
         return <div className="container-fluid">
@@ -19,7 +23,7 @@ class MainComponent extends React.Component<{}, {}> {
           <div className="col-2 black folder-col pl-0 pt-2">
             <div className="row">
               <div className="col-12 pt-1 pb-2 text-center">
-                <button type="button" className="btn btn-lg btn-primary round-button"><i className="fas fa-pen"></i> Compose</button>
+                <button type="button" onClick={() => this.props.showSendModal()} className="btn btn-lg btn-primary round-button"><i className="fas fa-pen"></i> Compose</button>
               </div>
             </div>
             <div className="row">
@@ -38,13 +42,15 @@ class MainComponent extends React.Component<{}, {}> {
 }
 
 import { Store } from './store'
+import { showSendEMailModal } from "./actions";
 function mapStateToProps(state: Store): {} {
     return {
     }; 
 }
   
-function mapDispatchToProps(dispatch: any): {} {
+function mapDispatchToProps(dispatch: any): MainComponentActions {
       return {
+        showSendModal: () => showSendEMailModal([], "", "", dispatch)
       }
 }
 
