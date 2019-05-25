@@ -36,7 +36,7 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
                 </div>
             </div>
         } else {
-            contentDisplayed = <div className="col-11" dangerouslySetInnerHTML={{__html: (this.props.content || "").replace(/\n/g, "<br />")}}></div>
+            contentDisplayed = <div className="col-11" dangerouslySetInnerHTML={{__html: (this.props.content || "").trim().replace(/\n/g, "<br />")}}></div>
         }
 
         return <div className="container-fluid pt-2">
@@ -59,11 +59,6 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
                         <i className="fas fa-clock"></i> {this.props.date}
                     </div>
                 </div>
-                <div className="row mail-content">
-                    <div className="col-1  p-0">
-                    </div>
-                    {contentDisplayed}
-                </div>
                 <div className="row mail-footer">
                     <div className="col-1  p-0">
                     </div>
@@ -76,6 +71,11 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
                                 <button type="button" className="btn btn-primary"><i className="fas fa-reply"></i> Reply</button>
                             </div>
                     </div>
+                </div>
+                <div className="row mail-content p-2">
+                    <div className="col-1  p-0">
+                    </div>
+                    {contentDisplayed}
                 </div>
             </div>
     }
