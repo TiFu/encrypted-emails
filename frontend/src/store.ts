@@ -163,7 +163,19 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
             let selectedMailbox = "INBOX" in action.payload ? "INBOX" : null;
             let selectedEMail = null;
             if (selectedMailbox) {
-                selectedEMail = action.payload["INBOX"][0].id
+                selectedEMail = action.payload["INBOX"].sort((a, b) => {
+                    const dateA = new Date(a.date)
+                    const dateB = new Date(b.date)
+                    console.log("Date A", dateA, a.date)
+                    console.log("Date B", dateB, b.date)
+                    if (dateA < dateB) {
+                        return 1;
+                    } else if (dateA > dateB) {
+                        return -1
+                    } else {
+                        return 0
+                    }
+                    })[0].id
             }
             return {...state, mailboxes: action.payload, componentState: {...state.componentState, isSyncing: false, selectedMailbox: selectedMailbox, selectedEMail: selectedEMail} }
         break;

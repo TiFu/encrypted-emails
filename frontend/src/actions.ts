@@ -136,9 +136,13 @@ export function refreshAllBoxes(dispatch: any) {
     .then((result: any) => {
         console.log("Refreshed all boxes");
         console.log(result);
+        let newResults = {}
+        for (let element in result) {
+            newResults[element.replace(/"/g, "")] = result[element]
+        }
         dispatch({
             type: "REFRESH_BOXES",
-            payload: result
+            payload: newResults
         })
     });
 }
