@@ -17,8 +17,9 @@ class MailBox():
         self.mailboxes = []
         for i in self.connection.list()[1]:
             l = i.decode().split(' "/" ')
-            if not "Calendar" in l[1] and not "Noselect" in l[0]:
-                self.mailboxes.append(l[1])
+            print(l)
+            if not "Calendar" in i.decode() and not "Noselect" in i.decode():
+                self.mailboxes.append(l[-1])
 
     def get_n_emails(self, mailbox):
         _, byteno = self.connection.select(mailbox, readonly=True)
