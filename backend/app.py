@@ -39,6 +39,7 @@ def getMail():
     
     data = request.get_json()
     payload = mail_box.get_mail(data["id"], data["mailbox"])
+    print("RETURNING PAYLOAD: " + str(payload))
     return payload
 
 @app.route('/cryptomail/api/v1.0/SendMail', methods = ["POST"])

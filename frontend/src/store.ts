@@ -15,7 +15,8 @@ export type Store = {
         isSending: boolean,
         initialRecipients: string[] | null,
         initialSubject: string | null,
-        initialContent: string | null
+        initialContent: string | null,
+        isSyncing: boolean
     },
     errorMessage: {
         error: string | null,
@@ -58,7 +59,8 @@ let initialState = {
         initialSubject: null,
         showSendEMailModal: false,
         failedSending: false,
-        isSending: false
+        isSending: false,
+        isSyncing: false
     },
     errorMessage: {
         error: null,
@@ -158,7 +160,7 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
             return { ...state, mailContents: mail };
         break;
         case "REFRESH_BOXES":
-            return {...state, mailboxes: action.payload }
+            return {...state, mailboxes: action.payload, componentState: {...state.componentState, isSyncing: false} }
         break;
         
         case "SELECT_MAILBOX": 
@@ -178,6 +180,9 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
             return { ...state, componentState: { ...state.componentState, isSending: false, showSendEMailModal: !action.payload.success, failedSending: !action.payload.success}}
         case "SENDING_EMAIL":
             return { ...state, componentState: { ...state.componentState, isSending: true, showSendEMailModal: true, failedSending: false }}
+        case "SYNCING": 
+            console.log("SYNCING")
+            return { ...state, componentState: { ...state.componentState, isSyncing: true}}
         case "LOGGED_IN": 
 
             return { 

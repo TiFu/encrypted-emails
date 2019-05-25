@@ -124,6 +124,11 @@ export function getEMailContent(emailId: string, mailbox: string, dispatch: any)
 }
 
 export function refreshAllBoxes(dispatch: any) {
+    dispatch({
+        type: "SYNCING",
+        payload: null
+    })
+    
     $.ajax('http://localhost:5000/cryptomail/api/v1.0/RefreshAll', {
         dataType: "json",
         method: 'GET'
