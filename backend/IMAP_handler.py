@@ -41,6 +41,9 @@ class MailBox():
         for i in range(1, self.get_n_emails(mailbox) + 1):
             _, msg_data = self.connection.fetch(str(i), "RFC822")
             mail = mailparser.parse_from_bytes(msg_data[0][1])
+            encrypted = False
+            if (len(mail.text_plain) > 0) and "BEGIN PGP MESSAGE" in mail.text_plain[0]:
+                encrypted = True
             emails.append({"id": str(i),
                            "date": str(mail.date),
                            "delivered_to": mail.delivered_to,
@@ -49,7 +52,7 @@ class MailBox():
                            "to": mail.to,
                            "timezone": mail.timezone,
                            "read": self.is_read(str(i)),
-                           "encrypted:": True if "BEGIN PGP MESSAGE" in mail.text_plain[0] else False})
+                           "encrypted:": encrypted})
         return emails
 
     def refresh_all(self):
