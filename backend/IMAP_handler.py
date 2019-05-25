@@ -2,7 +2,7 @@ import email
 import imaplib
 import mailparser
 from gpg_handler import decryptString
-
+import re
 
 class MailBox():
 
@@ -16,7 +16,8 @@ class MailBox():
         # create list of mailboxes
         self.mailboxes = []
         for i in self.connection.list()[1]:
-            l = i.decode().split(' "/" ')
+            l = re.compile(" \".\" ").split(i.decode()py)
+
             print(l)
             if not "Calendar" in i.decode() and not "Noselect" in i.decode():
                 self.mailboxes.append(l[-1])
