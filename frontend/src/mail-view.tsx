@@ -6,7 +6,7 @@ type MailViewProps = {
     delivered_to: string | null,
     from: string[][] | null,
     subject: string | null,
-    to: string | null,
+    to: string[][] | null,
     timezone: string | null,
     read: boolean
     content: string | null,

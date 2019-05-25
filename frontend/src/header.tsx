@@ -19,11 +19,10 @@ class Header extends React.Component<HeaderProps & HeaderActions, {}> {
                 CryptoMail
             </div>
             <div className="logged-in-user">
-                {this.props.email} <button type="button" onClick={() => this.props.sync()} className="btn btn-secondary"><i className={"fas fa-sync" + (this.props.isSpinning ? "fa-spin" : "")}></i></button>    
+                {this.props.email} <button type="button" onClick={() => this.props.sync()} className="btn btn-secondary"><i className={"fas fa-sync " + (this.props.isSpinning ? "fa-spin" : "")}></i></button>    
             </div>
         </div>
-    }
-  
+    }  
 }
 
 

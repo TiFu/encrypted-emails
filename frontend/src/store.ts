@@ -160,7 +160,12 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
             return { ...state, mailContents: mail };
         break;
         case "REFRESH_BOXES":
-            return {...state, mailboxes: action.payload, componentState: {...state.componentState, isSyncing: false} }
+            let selectedMailbox = "INBOX" in action.payload ? "INBOX" : null;
+            let selectedEMail = null;
+            if (selectedMailbox) {
+                selectedEMail = action.payload["INBOX"][0].id
+            }
+            return {...state, mailboxes: action.payload, componentState: {...state.componentState, isSyncing: false, selectedMailbox: selectedMailbox, selectedEMail: selectedEMail} }
         break;
         
         case "SELECT_MAILBOX": 
