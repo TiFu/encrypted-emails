@@ -16,7 +16,7 @@ class MailBox():
         # create list of mailboxes
         self.mailboxes = []
         for i in self.connection.list()[1]:
-            l = re.compile(" \".\" ").split(i.decode()py)
+            l = re.compile(" \".\" ").split(i.decode())
 
             print(l)
             if not "Calendar" in i.decode() and not "Noselect" in i.decode():
