@@ -3,6 +3,7 @@ import { userInfo } from "os";
 declare var $: any;
 
 export function showSendEMailModal(recipients: string[], subject: string, content: string, dispatch: any) {
+    console.log("[EMAIL MODAL] ", recipients, subject, content)
     dispatch({
         type: "SHOW_SENDING_MODAL",
         payload: {

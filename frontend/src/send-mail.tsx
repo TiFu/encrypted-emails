@@ -12,6 +12,11 @@ type WriteEMailProps = {
     smtpHost: string | null
     smtpPort: string | null
 
+
+    initialRecipients: string[],
+    initialSubject: string
+    initialContent: string
+
     showModal: boolean
     isSending: boolean
     failedSending: boolean
@@ -26,12 +31,26 @@ class WriteEMailComponent extends React.Component<WriteEMailProps & WriteEMailAc
 
     public constructor(props: WriteEMailAction & WriteEMailProps) {
         super(props);
-        this.state ={ 
-            recipients: "",
-            subject: "",
-            content: ""
+        console.log("[EMAIL MODAL] got props ", props);
+        this.state = { 
+            recipients: (props.initialRecipients || []).join(", "),
+            subject: props.initialSubject,
+            content: props.initialContent
         }
     }
+
+    public componentWillReceiveProps(props: WriteEMailAction & WriteEMailProps) {
+        console.log("[EMAIL MODAL] ", {            recipients: (props.initialRecipients || []).join(", "),
+        subject: props.initialSubject,
+        content: props.initialContent
+        })
+        this.setState({
+            recipients: (props.initialRecipients || []).filter(r => r.indexOf("@") !== -1).join(", "),
+            subject: props.initialSubject,
+            content: props.initialContent
+        })        
+    }
+
 
     private sendEmail() {
         this.props.sendEMail(this.props.username, this.props.password, this.state.recipients.split(", "), this.state.content, this.state.subject, this.props.smtpHost, this.props.smtpPort);
@@ -47,17 +66,17 @@ class WriteEMailComponent extends React.Component<WriteEMailProps & WriteEMailAc
         return <form className="text-left">
         <div className="form-group">
             <label>Recipients</label>
-            <input type="text" onChange={(e) => this.updateState("recipients", e)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+            <input type="text" value={this.state.recipients} onChange={(e) => this.updateState("recipients", e)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
         </div>
 
         <div className="form-group">
             <label>Subject</label>
-            <input type="text" onChange={(e) => this.updateState("subject", e)}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" /> 
+            <input type="text" value={this.state.subject} onChange={(e) => this.updateState("subject", e)}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" /> 
         </div>
 
         <div className="form-group">
             <label>Example textarea</label>
-            <textarea className="form-control" onChange={(e) => this.updateState("content", e)}  id="exampleFormControlTextarea1" rows={10}></textarea>
+            <textarea className="form-control" value={this.state.content} onChange={(e) => this.updateState("content", e)}  id="exampleFormControlTextarea1" rows={10}></textarea>
         </div>
 
 </form>
@@ -120,7 +139,11 @@ function mapStateToProps(state: Store): WriteEMailProps {
         password: state.user.password,
         smtpHost: state.componentState.smtpHost,
         smtpPort: state.componentState.smtpPort,
-        showModal: state.componentState.showSendEMailModal
+        showModal: state.componentState.showSendEMailModal,
+
+        initialRecipients: state.componentState.initialRecipients,
+        initialSubject: state.componentState.initialSubject,
+        initialContent: state.componentState.initialContent
     }; 
 }
  

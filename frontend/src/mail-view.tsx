@@ -54,10 +54,10 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
                     <div className="col-11">
                         <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"></div>
                             <div className="btn-group mr-2" role="group" aria-label="Second group">
-                                <button type="button" onClick={() => this.props.showSendEMailModal([], this.props.subject, this.props.content)} className="btn btn-secondary"><i className="fas fa-arrow-circle-right"></i> Forward</button>
+                                <button type="button" onClick={() => this.props.showSendEMailModal([], "FW: " + this.props.subject, this.props.content)} className="btn btn-secondary"><i className="fas fa-arrow-circle-right"></i> Forward</button>
                             </div>
                             <div className="btn-group mr-2" role="group" aria-label="First group">
-                                <button type="button" onClick={() => this.props.showSendEMailModal(this.props.from[0], this.props.subject, this.props.content)} className="btn btn-primary"><i className="fas fa-reply"></i> Reply</button>
+                                <button type="button" onClick={() => {this.props.showSendEMailModal(this.props.from[0], "RE: " + this.props.subject, this.props.content)}} className="btn btn-primary"><i className="fas fa-reply"></i> Reply</button>
                             </div>
                     </div>
                 </div>
@@ -96,9 +96,9 @@ function mapStateToProps(state: Store): MailViewProps {
         message = state.mailboxes[state.componentState.selectedMailbox].find(m => m.id === state.componentState.selectedEMail) || {}
     }
 
-    if (state.componentState.selectedEMail && state.mailContents[state.componentState.selectedEMail]) {
+    if (state.componentState.selectedEMail && state.mailContents[state.componentState.selectedMailbox + "/" + state.componentState.selectedEMail]) {
 
-        content = state.mailContents[state.componentState.selectedEMail]
+        content = state.mailContents[state.componentState.selectedMailbox + "/" + state.componentState.selectedEMail]
     }
 
     return {

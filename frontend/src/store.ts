@@ -12,7 +12,10 @@ export type Store = {
         failedLogin: boolean,
         showSendEMailModal: boolean,
         failedSending: boolean
-        isSending: boolean
+        isSending: boolean,
+        initialRecipients: string[] | null,
+        initialSubject: string | null,
+        initialContent: string | null
     },
     errorMessage: {
         error: string | null,
@@ -30,7 +33,8 @@ export type Store = {
             subject: string,
             to: string,
             timezone: string,
-            read: boolean
+            read: boolean,
+            encrypted: boolean
         }[]
     },
     mailContents: {
@@ -49,6 +53,9 @@ let initialState = {
         imapPort: null,
         smtpHost: null,
         smtpPort: null,
+        initialContent: null,
+        initialRecipients: null,
+        initialSubject: null,
         showSendEMailModal: false,
         failedSending: false,
         isSending: false
@@ -147,7 +154,7 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
         break;
         case "GET_MAIL":
             let mail = { ...state.mailContents }
-            mail[action.payload.id] = action.payload.content
+            mail[action.payload.mailbox + "/" + action.payload.id] = action.payload.content
             return { ...state, mailContents: mail };
         break;
         case "REFRESH_BOXES":
@@ -162,7 +169,9 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
         case "LOGGING_IN": 
             return { ...state, componentState: { ...state.componentState, loggingIn: true}}
         case "SHOW_SENDING_MODAL": 
-            return { ...state, componentState: { ...state.componentState, showSendEMailModal: true, initialRecipients: action.payload.recipients, initialSubject: action.payload.subject, initialContent: action.payload.content}}
+            let newState = { ...state, componentState: { ...state.componentState, showSendEMailModal: true, initialRecipients: action.payload.recipients, initialSubject: action.payload.subject, initialContent: action.payload.content}}
+            console.log("[EMAIL MODAL] ", newState)
+            return newState;
         case "CLOSE_SENDING_MODAL":
             return { ...state, componentState: { ...state.componentState, showSendEMailModal: false}}
         case "SENT_EMAIL": 

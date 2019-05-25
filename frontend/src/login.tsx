@@ -50,31 +50,31 @@ class LoginComponent extends React.Component<LoginComponentProps & LoginComponen
         return <form className="text-left">
         <div className="form-group">
             <label>Email address</label>
-            <input type="email" onChange={(e) => this.updateState("email", e)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+            <input type="email" value={this.state.email} onChange={(e) => this.updateState("email", e)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
         </div>
         <div className="form-group">
             <label>Password</label>
-            <input type="password" onChange={(e) => this.updateState("password", e)}  className="form-control" id="exampleInputPassword1" placeholder="Password" />
+            <input type="password" value={this.state.password} onChange={(e) => this.updateState("password", e)}  className="form-control" id="exampleInputPassword1" placeholder="Password" />
         </div>
 
 
         <div className="form-group">
             <label>IMAP Host (e.g. imap.gmail.com)</label>
-            <input type="text" onChange={(e) => this.updateState("imapHost", e)}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" /> 
+            <input type="text" value={this.state.imapHost} onChange={(e) => this.updateState("imapHost", e)}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" /> 
         </div>
         <div className="form-group">
             <label>IMAP Port (e.g. 993)</label>
-            <input type="text" onChange={(e) => this.updateState("imapPort", e)}  className="form-control" id="exampleInputPassword1" placeholder="" />
+            <input type="text" value={this.state.imapPort} onChange={(e) => this.updateState("imapPort", e)}  className="form-control" id="exampleInputPassword1" placeholder="" />
         </div>
 
 
         <div className="form-group">
             <label>SMTP Host (e.g. smtp.gmail.com)</label>
-            <input type="text" onChange={(e) => this.updateState("smtpHost", e)}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" />
+            <input type="text" value={this.state.smtpHost} onChange={(e) => this.updateState("smtpHost", e)}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" />
         </div>
         <div className="form-group">
             <label>SMTP Port (e.g. 465 or 587)</label>
-            <input type="text" onChange={(e) => this.updateState("smptPort", e)}  className="form-control" id="exampleInputPassword1" placeholder="" />
+            <input type="text" value={this.state.smptPort} onChange={(e) => this.updateState("smptPort", e)}  className="form-control" id="exampleInputPassword1" placeholder="" />
         </div>
 
 </form>
