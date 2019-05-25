@@ -94,6 +94,11 @@ class LoginComponent extends React.Component<LoginComponentProps & LoginComponen
         </div>
     }
     render() { 
+        console.log("Password: ", this.props.password)
+        console.log("Username: ", this.props.username)
+        if (this.props.password && this.props.username) {
+            return null;
+        }
         console.log("Rendering modal!")
         const show = (!this.props.password || !this.props.username) ? "show" : "no-show"
         return <div className={"modal-backdrop backdrop-" + show}><div className={"modal " + show} role="dialog">
@@ -124,7 +129,7 @@ function mapStateToProps(state: Store): {} {
     return {
         isLoggingIn: state.componentState.loggingIn,
         username: state.user.email,
-        password: state.user.password
+        password: state.user.password,
         loginFailed: state.componentState.failedLogin
     }; 
 }

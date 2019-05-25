@@ -51,9 +51,10 @@ class MailBox():
 
     def refresh_all(self):
         mail_preview_list = {}
-        # print(self.mailboxes)
+        print(self.mailboxes)
 
         for m in self.mailboxes:
+            print("Refreshing " + str(m))
             mail_preview_list[m] = self.refresh_mailbox(m)
         return mail_preview_list
 

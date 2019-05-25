@@ -22,8 +22,12 @@ type MailViewActions = {
 class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
 
     render() { 
-        let contentDisplayed = null
+        console.log("Props Mail View: ", this.props)
+        if (!this.props.subject) {
+            return <div className="pt-5 text-center">Please select an e-mail!</div>
+        }
 
+        let contentDisplayed = null
         if (!this.props.content && this.props.selectedMailbox && this.props.id) {
             this.props.fetchEmailContent(this.props.id, this.props.selectedMailbox)
             contentDisplayed = <div className="col-11">
@@ -35,9 +39,6 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
             contentDisplayed = <div className="col-11" dangerouslySetInnerHTML={{__html: (this.props.content || "").replace(/\n/g, "<br />")}}></div>
         }
 
-        if (!this.props.subject) {
-            return <div className="pt-5 text-center">Please select an e-mail!</div>
-        }
         return <div className="container-fluid pt-2">
                 <div className="row mail-subject">
                     <div className="col-1  p-0">
@@ -87,11 +88,16 @@ import { stat } from "fs";
 function mapStateToProps(state: Store): MailViewProps {
     let content = null
     let message = {}
+    console.log("Selected EMail: ", state.componentState.selectedEMail)
+    console.log("Selected Mail box: ", state.componentState.selectedEMail)
+    console.log("E-Mail contents: ")
+    if (state.componentState.selectedMailbox && state.mailboxes[state.componentState.selectedMailbox]) {
+        message = state.mailboxes[state.componentState.selectedMailbox].find(m => m.id === state.componentState.selectedEMail) || {}
+    }
+
     if (state.componentState.selectedEMail && state.mailContents[state.componentState.selectedEMail]) {
+
         content = state.mailContents[state.componentState.selectedEMail]
-        if (state.componentState.selectedMailbox && state.mailboxes[state.componentState.selectedMailbox]) {
-            message = state.mailboxes[state.componentState.selectedMailbox].find(m => m.id === state.componentState.selectedEMail) || {}
-        }
     }
 
     return {

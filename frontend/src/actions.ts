@@ -8,22 +8,20 @@ export function loginToEMail(hostname: string, port: string, user:string, passwo
     $.ajax('http://localhost:5000/cryptomail/api/v1.0/LogIn', {
         method: 'POST',
         contentType: 'application/json',
-        dataType: "json",
-        data: {
+        dataType: "text",
+        data: JSON.stringify({
             hostname: hostname,
             port: port,
             user: user,
             password: password
-        }
+        })
     })
     .then((result: any) => {
-        console.log("Refreshed all boxes");
-        console.log(result);
         dispatch({
             type: "LOGGED_IN",
             payload: {
                 success: result == "success",
-                username: result == "success" ? user : null,
+                email: result == "success" ? user : null,
                 password: result == "success" ? password : null,
                 imapHost: result == "success" ? hostname : null,
                 imapPort: result == "success" ? port : null,
@@ -31,12 +29,14 @@ export function loginToEMail(hostname: string, port: string, user:string, passwo
                 smtpHost: result == "success" ? smtpHost : null
             }
         })
+        refreshAllBoxes(dispatch)
     }).catch((err: any) => {
+        console.log("ERROR ", err)
         dispatch({
             type: "LOGGED_IN",
             payload: {
                 success: false,
-                username: false ? user : null,
+                email: false ? user : null,
                 password: false ? password : null,
                 imapHost: false ? hostname : null,
                 imapPort: false ? port : null,
@@ -49,13 +49,13 @@ export function loginToEMail(hostname: string, port: string, user:string, passwo
 
 export function getEMailContent(emailId: string, mailbox: string, dispatch: any){ 
     $.ajax('http://localhost:5000/cryptomail/api/v1.0/GetMail', {
-        method: 'GET',
+        method: 'POST',
         contentType: 'application/json',
         dataType: "text",
-        data: {
+        data: JSON.stringify({
             id: emailId,
             mailbox: mailbox
-        }
+        })
     })
     .then((result: any) => {
         console.log("Refreshed all boxes");
@@ -74,7 +74,7 @@ export function getEMailContent(emailId: string, mailbox: string, dispatch: any)
 export function refreshAllBoxes(dispatch: any) {
     $.ajax('http://localhost:5000/cryptomail/api/v1.0/RefreshAll', {
         dataType: "json",
-        method: 'POST'
+        method: 'GET'
     })
     .then((result: any) => {
         console.log("Refreshed all boxes");

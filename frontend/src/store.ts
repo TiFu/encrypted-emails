@@ -160,15 +160,18 @@ export const reducer = (state: Store = initialState, action: { type: string, pay
                 ...state, 
                 componentState: { 
                     ...state.componentState, 
-                    email: action.payload.email, 
-                    password: action.payload.password, 
                     loggingIn: false, 
                     failedLogin: !action.payload.success,
                     imapHost: action.payload.imapHost,
                     imapPort: action.payload.imapPort,
                     smtpHost: action.payload.smtpHost,
                     smtpPort: action.payload.smtpPort
-            }}
+                },
+                user: {
+                    email: action.payload.email, 
+                    password: action.payload.password, 
+                }
+        }
         default: 
         return { ...state };
         break;

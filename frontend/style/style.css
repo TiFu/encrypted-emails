@@ -85,19 +85,15 @@ h2 {
 }
 
 .mail-list-sender-col {
-    width: 20%;
+    width: 40%;
 }
 
 .mail-list-content-col {
     width: auto;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 100px;
 }
 
 .mail-list-date-col {
-    width: 75px;
+    width: 120px;
 }
 
 .clock {
