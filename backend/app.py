@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from IMAP_handler import MailBox
 from SFTP_handler import MailSender
+from firebase_handler import dbQuerier
 import json
 
 mail_box=None
@@ -18,6 +19,9 @@ def logIn():
     global mail_box
     data = request.get_json()
     mail_box = MailBox(data["hostname"], data["user"], data["password"], data["port"])
+    d=dbQuerier()
+    if not d.userExists(data["email"]):
+        d.createUser(data["email"], data["password"])
     return "success"
 
 @app.route('/cryptomail/api/v1.0/RefreshAll', methods = ["GET"])
@@ -26,7 +30,7 @@ def refreshAll():
     if not mail_box:
         return "Please log in before requesting emails."
     
-    return json.dumps(mail_box.refresh_all())#
+    return json.dumps(mail_box.refresh_all())
 
 @app.route('/cryptomail/api/v1.0/GetMail', methods = ["POST"])
 def getMail():
