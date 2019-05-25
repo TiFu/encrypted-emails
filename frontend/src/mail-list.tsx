@@ -10,7 +10,8 @@ type MailListProps = {
         subject: string,
         to: string,
         timezone: string,
-        read: boolean
+        read: boolean,
+        encrypted: boolean
     }[],
 
     selectedEMail: string | null
@@ -26,7 +27,7 @@ export class MailList extends React.Component<MailListProps & MailListActions, {
         let mails: any[] = [] 
         if (this.props.messages) {
             mails = this.props.messages.map((m: any) => {
-                    let lock = m.encrypted ? <i className="fas fa-unlock-alt"></i> : null;
+                    let lock = m["encrypted:"] ? <i className="fas fa-lock"></i> : null;
 
                     return <tr key={m.id} onClick={() => { console.log("Selected: ", m.id); this.props.selectEMail(m.id)}} className={"mail-list-row w-100 " + (m.id == this.props.selectedEMail ? "mail-list-background-selected" : "")}>
                     <th scope="row" className="mail-list-first-col">{lock}</th>

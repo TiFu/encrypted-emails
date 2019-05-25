@@ -109,8 +109,7 @@ export function getEMailContent(emailId: string, mailbox: string, dispatch: any)
         })
     })
     .then((result: any) => {
-        console.log("Refreshed all boxes");
-        console.log(result);
+        console.log("E-MAIL Content", result);
         dispatch({
             type: "GET_MAIL",
             payload: {
@@ -119,6 +118,8 @@ export function getEMailContent(emailId: string, mailbox: string, dispatch: any)
                 mailbox: mailbox
             }
         })
+    }).catch((err) => {
+        console.log("E-Mail Content Error", err)
     });
 }
 
