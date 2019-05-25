@@ -57,7 +57,7 @@ class WriteEMailComponent extends React.Component<WriteEMailProps & WriteEMailAc
 
         <div className="form-group">
             <label>Example textarea</label>
-            <textarea className="form-control" onChange={(e) => this.updateState("subject", e)}  id="exampleFormControlTextarea1" rows={10}></textarea>
+            <textarea className="form-control" onChange={(e) => this.updateState("content", e)}  id="exampleFormControlTextarea1" rows={10}></textarea>
         </div>
 
 </form>
@@ -82,6 +82,10 @@ class WriteEMailComponent extends React.Component<WriteEMailProps & WriteEMailAc
     }
 
     render() { 
+        if (!this.props.showModal) {
+            return null;
+        }
+
         const show = this.props.showModal ? "show" : "no-show"
         return <div className={"modal-backdrop backdrop-" + show}><div className={"modal " + show} role="dialog">
         <div className="modal-dialog" role="document">

@@ -4,6 +4,7 @@ import FolderOverview from './folder-overview'
 import Header from './header'
 import MailComponent from './mails'
 import LoginComponent from './login'
+import SendMailComponent from './send-mail'
 
 type MainComponentActions = {
     showSendModal: () => void
@@ -14,6 +15,7 @@ class MainComponent extends React.Component<MainComponentActions, {}> {
     render() { 
         return <div className="container-fluid">
                 <LoginComponent />
+                <SendMailComponent />
         <div className="row">
           <div className="col-12 green header border-bottom header-bg-color">
             <Header />

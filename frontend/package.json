@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "postbuild": "cp index.html ./build/ && cp package.json ./build/ && cd build && npm install --production",
+    "postbuild": "cp -r style ./build/ && cp index.html ./build/ && cp package.json ./build/ && cd build && npm install --production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd build && electron ."
   },
