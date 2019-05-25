@@ -1,6 +1,7 @@
 import email
 import imaplib
 import mailparser
+from gpg_handler import decryptString
 
 
 class MailBox():
@@ -10,6 +11,7 @@ class MailBox():
 
         self.connection = imaplib.IMAP4_SSL(hostname, port=port)
         self.connection.login(user, password)
+        self.password=password
 
         # create list of mailboxes
         self.mailboxes = []
@@ -58,6 +60,8 @@ class MailBox():
     def get_payload(self, mail: mailparser.MailParser):
         if(len(mail.text_html) != 0):
             return mail.text_html[0]
+        if "THIS MESSAGE HAS BEEN ENCRYPTED" in mail.text_plain[0]:
+            return decryptString(mail.text_plain[0], self.password)
         return mail.text_plain[0]
 
     def get_mail(self, id, mailbox):

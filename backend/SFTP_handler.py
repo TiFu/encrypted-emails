@@ -2,6 +2,8 @@ import smtplib
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from firebase_handler import dbQuerier
+from gpg_handler import encryptString
 
 
 class MailSender():
@@ -9,6 +11,8 @@ class MailSender():
         smtp_connection = smtplib.SMTP(host=hostname, port=port)
         smtp_connection.starttls()
         smtp_connection.login(user, password)
+
+        d = dbQuerier()
 
         status = ""
 
@@ -19,8 +23,9 @@ class MailSender():
             msg["To"] = email
             msg["Subject"] = subject
 
-            #TODO: CHECK IF USER HAS PUB KEY
-            #TODO: ENCRYPT MESSAGE
+            if(d.userExists(email)):
+                content = encryptString(content, d.get_public_key(email))
+
             msg.attach(MIMEText(content, "plain"))
             try:
                 smtp_connection.send_message(msg)

@@ -7,7 +7,7 @@ gpgdir = expanduser("~/.cryptomail")
 
 def createKeys(mail, passphrase):
     '''returns public key '''
-    #os.system('rm -rf ' + gpgdir )
+    os.system('rm -rf ' + gpgdir )
     gpg = gnupg.GPG(gnupghome=gpgdir)
     input_data = gpg.gen_key_input(
         name_email=mail,
