@@ -16,22 +16,23 @@ export function sendEMail(sender: string, password: string, recipients: string[]
     dispatch({
         type: "SENDING_EMAIL",
         payload: null
-    })    
-
-    $.ajax("/cryptomail/api/v1.0/SendMail", {
+    })
+    let data = JSON.stringify({
+        "content": content,
+        "subject": subject,
+        "recipients": recipients.reduce((prev, next) => !prev ? "[" + next : prev + ", " + next, "") + "]",
+        "sender": sender,
+        "user": sender,
+        "password": password,
+        "hostname": smtpHostname,
+        "port": smtpPort
+    })
+    console.log("Data", data)
+    $.ajax("http://localhost:5000/cryptomail/api/v1.0/SendMail", {
         method: "POST",
         contentType: "application/json",
         dataType: "text",
-        data: JSON.stringify({
-            "content": content,
-            "subject": subject,
-            "recipients": recipients,
-            "sender": sender,
-            "user": sender,
-            "password": password,
-            "hostname": smtpHostname,
-            "port": smtpPort
-        })
+        data: data
     }).then((result: any) => {
         dispatch({
             type: "SENT_EMAIL",
