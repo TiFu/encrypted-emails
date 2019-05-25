@@ -26,7 +26,19 @@ export class MailList extends React.Component<MailListProps & MailListActions, {
     render() {
         let mails: any[] = [] 
         if (this.props.messages) {
-            mails = this.props.messages.map((m: any) => {
+            mails = this.props.messages.sort((a, b) => {
+                const dateA = new Date(a.date)
+                const dateB = new Date(b.date)
+                console.log("Date A", dateA, a.date)
+                console.log("Date B", dateB, b.date)
+                if (dateA < dateB) {
+                    return 1;
+                } else if (dateA > dateB) {
+                    return -1
+                } else {
+                    return 0
+                }
+                }).map((m: any) => {
                     let lock = m["encrypted:"] ? <i className="fas fa-lock"></i> : null;
 
                     return <tr key={m.id} onClick={() => { console.log("Selected: ", m.id); this.props.selectEMail(m.id)}} className={"mail-list-row w-100 " + (m.id == this.props.selectedEMail ? "mail-list-background-selected" : "")}>
@@ -36,18 +48,6 @@ export class MailList extends React.Component<MailListProps & MailListActions, {
                         <br /><b>{m.subject}</b></td>
                     <td className="mail-list-date-col">{m.date}</td>
                 </tr>
-            })
-            mails = mails.sort((a, b) => {
-                const dateA = new Date(a.date)
-                const dateB = new Date(b.date)
-
-                if (dateA < dateB) {
-                    return -1;
-                } else if (dateA > dateB) {
-                    return 1
-                } else {
-                    return 0
-                }
             })
         }
         return <div className="container-fluid">
