@@ -1,14 +1,27 @@
 import os
 import gnupg
 from os.path import expanduser
+from firebase_handler import dbQuerier
 gpgdir = expanduser("~/.cryptomail")
 
 
 
 def createKeys(mail, passphrase):
-    '''returns public key '''
     os.system('rm -rf ' + gpgdir )
     gpg = gnupg.GPG(gnupghome=gpgdir)
+    d=dbQuerier()
+    if d.userExists(mail):
+        imported = gpg.import_keys(d.get_private_key(mail))
+        gpg.trust_keys(imported.fingerprints, "TRUST_ULTIMATE")
+        ascii_armored_private_keys = gpg.export_keys(imported.fingerprints, True, passphrase=passphrase)
+        
+        imported = gpg.import_keys(d.get_public_key(mail))
+        gpg.trust_keys(imported.fingerprints, "TRUST_ULTIMATE")
+        ascii_armored_public_keys = gpg.export_keys(imported.fingerprints)
+
+        return ascii_armored_public_keys, ascii_armored_private_keys
+
+
     input_data = gpg.gen_key_input(
         name_email=mail,
         passphrase=passphrase,
