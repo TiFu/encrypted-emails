@@ -67,7 +67,7 @@ class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
                     </div>
                     <div className="col">
                         <b>{this.props.from[0].reduce((prev, next) => prev == "" ? next : prev + ", " + next, "")}</b><br />
-                        to <span className="mail-content-preview">{this.props.to}</span>
+                        to <span className="mail-content-preview">{this.props.to[0].join(", ")}</span>
                     </div>
                     <div className="col text-right clock">
                         <i className="fas fa-clock"></i> {this.props.date}
