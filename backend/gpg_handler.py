@@ -28,7 +28,8 @@ def encryptString(string, recipientkey):
     #set its trust level
     gpg.trust_keys(imported.fingerprints, "TRUST_ULTIMATE")
     #print(imported.fingerprints)
-    enc_string = gpg.encrypt(string, imported.fingerprints)
+    enc_string = gpg.encrypt(string, imported.fingerprints)#
+    print(enc_string)
     #print(enc_string)
     return enc_string
 

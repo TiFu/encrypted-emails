@@ -12,9 +12,11 @@ class MailSender():
         smtp_connection.starttls()
         smtp_connection.login(user, password)
 
+        _content=content
         d = dbQuerier()
 
         status = ""
+        recipients = recipients[1:-1].split(",")
 
         for email in recipients:
             msg = MIMEMultipart()
@@ -23,10 +25,11 @@ class MailSender():
             msg["To"] = email
             msg["Subject"] = subject
 
+            #print(d.userExists(email))
             if(d.userExists(email)):
-                content = encryptString(content, d.get_public_key(email))
+                _content = encryptString(_content, d.get_public_key(email))
 
-            msg.attach(MIMEText(content, "plain"))
+            msg.attach(MIMEText(str(_content), "plain"))
             try:
                 smtp_connection.send_message(msg)
                 status = "success"

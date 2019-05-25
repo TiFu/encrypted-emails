@@ -61,7 +61,7 @@ class MailBox():
     def get_payload(self, mail: mailparser.MailParser):
         if(len(mail.text_html) != 0):
             return mail.text_html[0]
-        if "THIS MESSAGE HAS BEEN ENCRYPTED" in mail.text_plain[0]:
+        if "-----BEGIN PGP MESSAGE-----" in mail.text_plain[0]:
             return decryptString(mail.text_plain[0], self.password)
         return mail.text_plain[0]
 
