@@ -1,8 +1,11 @@
 import * as React from "react";
-import { MailList } from "./mail-list";
-import { MailView } from "./mail-view";
+import MailList from "./mail-list";
+import MailView from "./mail-view";
 
-export class MailComponent extends React.Component<{}, {}> {
+
+
+
+class MailComponent extends React.Component<{}, {}> {
 
     render() { 
         return <div className="container-fluid p-0 h-100 w-100">
@@ -19,3 +22,18 @@ export class MailComponent extends React.Component<{}, {}> {
     }
   
 }
+
+import { Store } from './store'
+import { connect } from 'react-redux';
+function mapStateToProps(state: Store): {} {
+    console.log("State: ", state);
+    return {
+    }; 
+}
+  
+function mapDispatchToProps(dispatch: any): {} {
+      return {
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MailComponent)

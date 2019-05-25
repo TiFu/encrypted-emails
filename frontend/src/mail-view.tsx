@@ -1,14 +1,49 @@
 import * as React from "react";
 
-export class MailView extends React.Component<{}, {}> {
+type MailViewProps = {
+    id: string | null,
+    date: string | null,
+    delivered_to: string | null,
+    from: string | null,
+    subject: string | null,
+    to: string | null,
+    timezone: string | null,
+    read: boolean
+    content: string | null,
+
+    selectedMailbox: string | null
+}
+
+
+type MailViewActions = {
+    fetchEmailContent: (id: string, mailbox: string) => void
+}
+
+class MailView extends React.Component<MailViewProps & MailViewActions, {}> {
 
     render() { 
+        let contentDisplayed = null
+
+        if (!this.props.content && this.props.selectedMailbox && this.props.id) {
+            this.props.fetchEmailContent(this.props.id, this.props.selectedMailbox)
+            contentDisplayed = <div className="col-11">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading e-mail</span>
+                </div>
+            </div>
+        } else {
+            contentDisplayed = <div className="col-11" dangerouslySetInnerHTML={{__html: (this.props.content || "").replace(/\n/g, "<br />")}}></div>
+        }
+
+        if (!this.props.subject) {
+            return <div className="pt-5 text-center">Please select an e-mail!</div>
+        }
         return <div className="container-fluid pt-2">
                 <div className="row mail-subject">
                     <div className="col-1  p-0">
                     </div>
                     <div className="col-11">
-                        <h2>Subject of the selected e-mail</h2>
+                        <h2>{this.props.subject}</h2>
                     </div>
                 </div>
                 <div className="row mail-header">
@@ -16,19 +51,17 @@ export class MailView extends React.Component<{}, {}> {
                         <i className="fas fa-user-circle user-image"></i>
                     </div>
                     <div className="col">
-                        <b>get in IT</b> <span className="mail-content-preview">&lt;jobgateway@get-in.de&gt;</span><br />
-                        to <span className="mail-content-preview">tino-fuhrmann@web.de</span>
+                        <b>{this.props.from}</b> <span className="mail-content-preview">&lt;{this.props.from}&gt;</span><br />
+                        to <span className="mail-content-preview">{this.props.to}</span>
                     </div>
                     <div className="col text-right clock">
-                        <i className="fas fa-clock"></i> 11:15 AM (6 hours ago)
+                        <i className="fas fa-clock"></i> {this.props.date}
                     </div>
                 </div>
                 <div className="row mail-content">
                     <div className="col-1  p-0">
                     </div>
-                    <div className="col-11">
-                    Content
-                    </div>
+                    {contentDisplayed}
                 </div>
                 <div className="row mail-footer">
                     <div className="col-1  p-0">
@@ -47,3 +80,42 @@ export class MailView extends React.Component<{}, {}> {
     }
   
 }
+
+import { Store } from './store'
+import { connect } from 'react-redux';
+import { stat } from "fs";
+function mapStateToProps(state: Store): MailViewProps {
+    let content = null
+    let message = {}
+    if (state.componentState.selectedEMail && state.mailContents[state.componentState.selectedEMail]) {
+        content = state.mailContents[state.componentState.selectedEMail]
+        if (state.componentState.selectedMailbox && state.mailboxes[state.componentState.selectedMailbox]) {
+            message = state.mailboxes[state.componentState.selectedMailbox].find(m => m.id === state.componentState.selectedEMail) || {}
+        }
+    }
+
+    return {
+        content: content,
+        id: null,
+        date: null, 
+        delivered_to: null, 
+        from: null,
+        subject: null,
+        to: null, 
+        timezone: null,
+        read: false,
+        selectedMailbox: state.componentState.selectedMailbox,
+        ...message
+    }; 
+}
+  
+import { getEMailContent } from './actions'
+
+function mapDispatchToProps(dispatch: any): MailViewActions {
+      return {
+        fetchEmailContent: (id: string, mailbox: string) => getEMailContent(id, mailbox, dispatch)
+
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MailView)

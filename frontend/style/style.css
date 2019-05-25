@@ -119,7 +119,9 @@ h2 {
     background-color: #F4F7F7;
 }
 
-
+.mail-list-background-selected {
+    background-color: #cccccc;
+}
 
 .mail-subject {
     min-height: 50px;
@@ -173,4 +175,18 @@ h2 {
 
 .header-bg-color {
     color: #004225;
+}
+
+.show {
+    display: block !important;
+}
+
+.modal-backdrop {
+    background-color: rgba(100, 100, 100, 0.8);
+    width: 100vw;
+    height: 100vh;
+  }
+
+.no-show {
+    display: none;
 }

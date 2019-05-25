@@ -1,6 +1,10 @@
 import * as React from "react";
 
-export class Header extends React.Component<{}, {}> {
+type HeaderProps = {
+    email: string | null
+}
+
+class Header extends React.Component<HeaderProps, {}> {
 
     render() { 
         return <div className="center-vertical">
@@ -9,9 +13,26 @@ export class Header extends React.Component<{}, {}> {
                 CryptoMail
             </div>
             <div className="logged-in-user">
-                test@test.com
+                {this.props.email}
             </div>
         </div>
     }
   
 }
+
+
+import { Store } from './store'
+import { connect } from 'react-redux';
+function mapStateToProps(state: Store): HeaderProps {
+    console.log("State: ", state);
+    return {
+      email: state.user.email
+    }; 
+}
+  
+function mapDispatchToProps(dispatch: any): {} {
+      return {
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -1,8 +1,40 @@
 import * as React from "react";
+import {selectEMail} from './actions'
 
-export class MailList extends React.Component<{}, {}> {
+type MailListProps = {
+    messages: {
+        id: string,
+        date: string,
+        delivered_to: string,
+        from: string,
+        subject: string,
+        to: string,
+        timezone: string,
+        read: boolean
+    }[],
 
-    render() { 
+    selectedEMail: string | null
+}
+
+type MailListActions = {
+    selectEMail: (id: string) => void;
+}
+
+export class MailList extends React.Component<MailListProps & MailListActions, {}> {
+
+    render() {
+        let mails: any[] = [] 
+        if (this.props.messages) {
+            mails = this.props.messages.map((m: any) => {
+                console.log("IS SELECTED: ", m.id, this.props.selectedEMail);
+                return <tr key={m.id} onClick={() => { console.log("Selected: ", m.id); this.props.selectEMail(m.id)}} className={"mail-list-row w-100 " + (m.id == this.props.selectedEMail ? "mail-list-background-selected" : "")}>
+                    <th scope="row" className="mail-list-first-col"></th>
+                    <td className="mail-list-sender-col">{m.to}</td>
+                    <td className="mail-list-content-col mail-content-preview"><span className="default-font">{m.subject}</span></td>
+                    <td className="mail-list-date-col">{m.date}</td>
+                </tr>
+            })
+        }
         return <div className="container-fluid">
                     <div className="row pt-2">
                     <h2>Inbox</h2>
@@ -10,27 +42,7 @@ export class MailList extends React.Component<{}, {}> {
                     <div className="row">
                         <table className="table mail-list-table mail-list-background pr-4">
                             <tbody className="w-100">
-                                <tr className="mail-list-row w-100">
-                                <th scope="row" className="mail-list-first-col"></th>
-                                <td className="mail-list-sender-col">get in IT</td>
-                                <td className="mail-list-content-col mail-content-preview"><span className="default-font">Unser Gespräch am KIT</span></td>
-                                <td className="mail-list-date-col">11:32</td>
-                                </tr>
-
-                                <tr className="mail-list-row w-100">
-                                <th scope="row" className="mail-list-first-col"></th>
-                                <td className="mail-list-sender-col">get in IT</td>
-                                <td className="mail-list-content-col mail-content-preview"><span className="default-font">Unser Gespräch am KIT</span></td>
-                                <td className="mail-list-date-col">11:32</td>
-                                </tr>
-
-                                <tr className="mail-list-row w-100">
-                                <th scope="row" className="mail-list-first-col"></th>
-                                <td className="mail-list-sender-col">get in IT</td>
-                                <td className="mail-list-content-col mail-content-preview"><span className="default-font">Unser Gespräch am KIT</span></td>
-                                <td className="mail-list-date-col">11:32</td>
-                                </tr>
-
+                                {mails}
                             </tbody>
                         </table>
                     </div>
@@ -38,3 +50,26 @@ export class MailList extends React.Component<{}, {}> {
     }
   
 }
+
+
+import { Store } from './store'
+import { connect } from 'react-redux';
+function mapStateToProps(state: Store): MailListProps {
+    let messages: any[] = []
+    if (state.componentState.selectedMailbox && state.mailboxes[state.componentState.selectedMailbox]) {
+        messages = state.mailboxes[state.componentState.selectedMailbox]
+    }
+    console.log("Messages: ", messages)
+    return {
+        messages: messages,
+        selectedEMail: state.componentState.selectedEMail
+    }; 
+}
+  
+function mapDispatchToProps(dispatch: any): MailListActions {
+      return {
+        selectEMail: (id: string) => selectEMail(id, dispatch)
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MailList)

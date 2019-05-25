@@ -1,15 +1,53 @@
 import * as React from "react";
 
-export class FolderOverview extends React.Component<{}, {}> {
+export type FolderOverviewProps = {
+  folders: {
+    [key:  string]: {
+        read: boolean
+    }[],
+  }
+  selectedFolder: string | null
+}
+
+export type FolderOverviewActions = {
+  selectFolder: (folder: string) => void
+}
+
+class FolderOverview extends React.Component<FolderOverviewProps & FolderOverviewActions, {}> {
 
     render() { 
+        console.log("Rendering: folder overiew!", this.props.folders);
+        let folders = []
+        if (this.props.folders) {
+          for (let folder in this.props.folders) {
+            let unreadMessages = this.props.folders[folder].reduce((prev, next) => next.read ? prev : prev + 1, 0);
+            folders.push(        
+                <a key={folder} onClick={() => { console.log("SELECTED FOLDER: ", folder); this.props.selectFolder(folder)}} className={"nav-link pl-4 folder" + (folder == this.props.selectedFolder ? " active" : "") } id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">{folder} <span className="badge badge-pill badge-dark new-e-mail-counter">{unreadMessages}</span></a>)
+          }
+        }
+
         return <div className="nav flex-column nav-pills folder-list" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <span className="align-middle"><a className="nav-link pl-3 active folder" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i className="fas fa-inbox"></i> Inbox <span className="badge badge-pill badge-dark new-e-mail-counter">10</span></a></span>
-        <a className="nav-link pl-4 folder" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Uni</a>
-        <a className="nav-link pl-4 folder" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Work <span className="badge badge-pill badge-dark new-e-mail-counter">4</span></a>
-        <a className="nav-link pl-3 folder" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i className="fas fa-exclamation-triangle"></i> Spam <span className="badge badge-pill badge-dark new-e-mail-counter">10</span></a>
-        <a className="nav-link pl-3 folder" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i className="fas fa-trash"></i> Trash <span className="badge badge-pill badge-dark new-e-mail-counter">3</span></a>
+          {folders}
       </div>
     }
-  
 }
+
+
+import { Store } from './store'
+import { connect } from 'react-redux';
+function mapStateToProps(state: Store): FolderOverviewProps {
+    console.log("State: ", state);
+    return {
+      folders: state.mailboxes,
+      selectedFolder: state.componentState.selectedMailbox
+    }; 
+}
+ 
+import { selectMailbox } from './actions'
+function mapDispatchToProps(dispatch: any): FolderOverviewActions {
+      return {
+          selectFolder: (folder: string) => selectMailbox(folder, dispatch)
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FolderOverview)
