@@ -12,8 +12,15 @@ class MailBox():
         self.connection = imaplib.IMAP4_SSL(hostname, port=port)
         self.connection.login(user, password)
         self.password=password
+        self.port=port
+        self.user=user
+        self.hostname=hostname
 
         # create list of mailboxes
+        self.mailboxes = []
+        self.detect_mailboxes()
+
+    def detect_mailboxes(self):
         self.mailboxes = []
         for i in self.connection.list()[1]:
             l = re.compile(" \".\" ").split(i.decode())
@@ -24,7 +31,9 @@ class MailBox():
 
     def get_n_emails(self, mailbox):
         _, byteno = self.connection.select(mailbox, readonly=True)
-        return min(self.MAX_MAIL, int(byteno[0].decode()))
+        (retcode, messages) = self.connection.search(None, 'ALL')
+        print(messages)
+        return int(byteno[0].decode())
 
     def is_read(self, email_id):
         unseen_list = self.connection.search(
@@ -37,6 +46,7 @@ class MailBox():
     def refresh_mailbox(self, mailbox):
         emails = []
         self.connection.select(mailbox, readonly=True)
+        self.connection.search(None, 'ALL')
         # print(self.get_n_emails(mailbox))
         for i in range(1, self.get_n_emails(mailbox) + 1):
             _, msg_data = self.connection.fetch(str(i), "RFC822")
@@ -53,9 +63,15 @@ class MailBox():
                            "timezone": mail.timezone,
                            "read": self.is_read(str(i)),
                            "encrypted:": encrypted})
+        from pprint import pprint
+        pprint(emails)
         return emails
 
     def refresh_all(self):
+        self.connection.logout()
+        self.connection = imaplib.IMAP4_SSL(self.hostname, port=self.port)
+        self.connection.login(self.user, self.password)
+        self.detect_mailboxes()
         mail_preview_list = {}
         print(self.mailboxes)
 
