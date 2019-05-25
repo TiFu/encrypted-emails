@@ -20,8 +20,8 @@ def logIn():
     data = request.get_json()
     mail_box = MailBox(data["hostname"], data["user"], data["password"], data["port"])
     d=dbQuerier()
-    if not d.userExists(data["email"]):
-        d.createUser(data["email"], data["password"])
+    if not d.userExists(data["user"]):
+        d.createUser(data["user"], data["password"])
     return "success"
 
 @app.route('/cryptomail/api/v1.0/RefreshAll', methods = ["GET"])
