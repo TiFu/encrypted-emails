@@ -26,8 +26,10 @@ export class MailList extends React.Component<MailListProps & MailListActions, {
         let mails: any[] = [] 
         if (this.props.messages) {
             mails = this.props.messages.map((m: any) => {
-                return <tr key={m.id} onClick={() => { console.log("Selected: ", m.id); this.props.selectEMail(m.id)}} className={"mail-list-row w-100 " + (m.id == this.props.selectedEMail ? "mail-list-background-selected" : "")}>
-                    <th scope="row" className="mail-list-first-col"></th>
+                    let lock = m.encrypted ? <i className="fas fa-unlock-alt"></i> : null;
+
+                    return <tr key={m.id} onClick={() => { console.log("Selected: ", m.id); this.props.selectEMail(m.id)}} className={"mail-list-row w-100 " + (m.id == this.props.selectedEMail ? "mail-list-background-selected" : "")}>
+                    <th scope="row" className="mail-list-first-col">{lock}</th>
                     <td className="mail-list-content-col mail-content-preview">
                         {m.from[0].reduce((prev: string, next: string) => prev == "" ? next : prev + ", " + next, "")}
                         <br /><b>{m.subject}</b></td>
